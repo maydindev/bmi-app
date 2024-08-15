@@ -1,7 +1,89 @@
+"use client";
 import Image from "next/image";
+import { useState, useMemo } from "react";
 
 export default function Home() {
+  const [weight, setWeight] = useState(70);
+  const [height, setHeight] = useState(170);
+  //const [bmi,setBmi] = useState(0)
+
+  const handleChangeWeight = (e) => {
+    setWeight((prev) => e.target.value);
+    //CalcBMI()
+  };
+
+  const handleChangeHeight = (e) => {
+    setHeight((prev) => e.target.value);
+    //CalcBMI()
+  };
+  /*
+  const CalcBMI = () => {
+    const bmi = weight / (height/100)**2
+    setBmi(bmi)
+  }
+  */
+  const calcBMIWithMemo = useMemo(() => {
+    return weight / (height / 100) ** 2;
+  }, [weight, height]);
+
+  const bmiValue = isNaN(calcBMIWithMemo) ? "-" : calcBMIWithMemo.toFixed(1);
+
+  {/*bmi.toFixed(2)*/}
+
   return (
+    <div className="flex justify-center items-center min-h-screen bg-blue-100">
+      <div className="w-1/4 bg-white shadow-lg text-center pb-5">
+        <h1 className="w-auto border-solid text-2xl font-bold mb-6 text-white bg-blue-900 p-3">
+          Project 7: BMI CALCULATOR
+        </h1>
+        <div className="mb-4 flex flex-col items-start ml-10 mr-10">
+          <label className="block text-left font-medium mb-2">
+            Kilo: {weight} kg
+          </label>
+          <input
+            type="range"
+            value={weight}
+            onChange={handleChangeWeight}
+            min="5"
+            max="200"
+            className="w-full h-2 bg-gray-200 border border-gray-300 rounded-full accent-blue-500"
+          />
+        </div>
+        <div className="mb-6 flex flex-col items-start ml-10 mr-10">
+          <label className="block text-left font-medium mb-2">
+            Boy: {height} cm
+          </label>
+          <input
+            type="range"
+            value={height}
+            onChange={handleChangeHeight}
+            min="50"
+            max="250"
+            className="w-full h-2 bg-gray-200 border border-gray-300 rounded-full accent-blue-500"
+          />
+        </div>
+
+        <div className="text-lg mt-4">
+          <div className="text-1xl mb-2">BMI:</div>
+          <div className="flex justify-center items-center">          
+            <span className="inline-block w-16 h-16 bg-blue-900 text-white rounded-full flex items-center justify-center text-1xl">{bmiValue}</span>
+          </div>
+        </div>  
+      </div>
+    </div>
+  );
+  }
+
+
+
+
+
+
+
+
+
+
+    /*
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
@@ -109,5 +191,6 @@ export default function Home() {
         </a>
       </div>
     </main>
+    
   );
-}
+}*/
